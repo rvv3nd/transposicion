@@ -3,7 +3,7 @@ function verificaClave(clave){
     /*Funcion que verifica la validez de una clave
     la validez consiste en que la clave tenga 
     una unica vez cada letra o caracter */
-    
+
     var aux = [] 
     for(letra of clave){
         if(aux.includes(letra)) return false
@@ -11,6 +11,69 @@ function verificaClave(clave){
     }
     return true
 }
+
+function undraw(){
+    OutputMatriz.value = ""
+}
+
+function draw(matriz,rows,columns,key,array){
+    /* Función que crea la matriz en el html */
+    undraw()
+    const matrizOutput = document.getElementById("OutputMatriz")
+    var tabla = document.createElement("table")
+    var tblBody = document.createElement("tbody")
+
+    let hrK = document.createElement("tr");
+
+        for (var j = 0; j < key.length; j++) {
+            // Crea un elemento <td> y un nodo de texto, haz que el nodo de
+            // texto sea el contenido de <td>, ubica el elemento <td> al final
+            // de la hilera de la tabla
+            var celda = document.createElement("td");
+            var textoCelda = document.createTextNode(key[j]);
+            celda.appendChild(textoCelda);
+            hrK.appendChild(celda);
+        }
+    tblBody.appendChild(hrK);
+
+    let hrI = document.createElement("tr");
+
+        for (var j = 0; j < array.length; j++) {
+            // Crea un elemento <td> y un nodo de texto, haz que el nodo de
+            // texto sea el contenido de <td>, ubica el elemento <td> al final
+            // de la hilera de la tabla
+            var celda = document.createElement("td");
+            var textoCelda = document.createTextNode(array[j]);
+            celda.appendChild(textoCelda);
+            hrI.appendChild(celda);
+        }
+    tblBody.appendChild(hrI);
+
+
+
+    for (var i = 0; i < rows; i++) {
+        // Crea las hileras de la tabla
+        let hilera = document.createElement("tr");
+
+        for (var j = 0; j < columns; j++) {
+            // Crea un elemento <td> y un nodo de texto, haz que el nodo de
+            // texto sea el contenido de <td>, ubica el elemento <td> al final
+            // de la hilera de la tabla
+            var celda = document.createElement("td");
+            var textoCelda = document.createTextNode(matriz[i][j]);
+            celda.appendChild(textoCelda);
+            hilera.appendChild(celda);
+        }
+
+    // agrega la hilera al final de la tabla (al final del elemento tblbody)
+        tblBody.appendChild(hilera);
+    }
+    // posiciona el <tbody> debajo del elemento <table>
+    tabla.appendChild(tblBody);
+    // appends <table> into <body>
+    matrizOutput.appendChild(tabla);
+}
+
 
 function getMatrix(clave,textoPlano){
     /*Función que dada la clave y el texto plano
@@ -114,11 +177,13 @@ function getIndices(clave){
 
 function codifica(clave,textoPlano){
     const rows = Math.ceil(textoPlano.length/clave.length)
+    const columns = clave.length
     var matrix = getMatrix(clave,textoPlano)
     var indices = getIndices(clave)
     // console.log(clave)
     // console.log(indices)
     console.log(matrix)
+    draw(matrix,rows,columns,clave,indices)
     var idxMenor 
     var textoCodificado = ""
     for(let i=0;i<clave.length;i++){
@@ -157,6 +222,7 @@ function decodifica(clave,textoCodificado){
     var matrix = getMatrixCodificada(claveOrdenada,textoCodificado)
     var textoDecodificado = ""
     var temp =
+    draw(matrix,rows,clave.length,clave,getIndices(clave))
     console.log(matrix)
     for (let i=0;i<rows;i++){
         for (letra of clave){
@@ -170,17 +236,26 @@ function decodifica(clave,textoCodificado){
 }
 
 
-// const columns = clave.length
-// const rows = Math.round(textoCodificado.length/clave.length)
-// var matrix = new Array(rows)
-// for (let i=0; i< matrix.length;i++){
-//     matrix[i] = new Array(columns)
-// }
-// var resultado = ""
-// let j = 0
-// textoCodificado = textoCodificado.split("")
-// for(let i=0;i<columns;i++){
-//     matrix[j][i] = textoCodificado.shift()
-//     matrix[j++][i] = textoCodificado.shift()
-// }
-// console.log(matrix)
+function getCodifica(){
+    const clave = document.getElementById("InputKey").value;
+    if(verificaClave(clave)){
+        const textoPlano = document.getElementById("InputTxtPlano").value
+        const resultado = codifica(clave,textoPlano)
+        
+        OutputResultado.value = resultado
+    }else{
+        alert("Tu clave no debe contener caracteres repetidos")
+    }
+}
+
+function getDecodifica(){
+    const clave = document.getElementById("InputKey").value;
+    if(verificaClave(clave)){
+        const textoCodificado = document.getElementById("InputTxtCodificado").value
+        const resultado = decodifica(clave,textoCodificado)
+        
+        OutputResultado.value = resultado
+    }else{
+        alert("Tu clave no debe contener caracteres repetidos")
+    }
+}
