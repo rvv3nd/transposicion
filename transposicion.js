@@ -14,6 +14,7 @@ function verificaClave(clave){
 
 function undraw(){
     OutputMatriz.value = ""
+    OutputResultado.value = ""
 }
 
 function draw(matriz,rows,columns,key,array){
@@ -193,43 +194,45 @@ function codifica(clave,textoPlano){
             textoCodificado += matrix[j][idxMenor]
         }
     }
+    console.log(textoCodificado)
     return textoCodificado
 }
 
 function getMatrixCodificada(clave,textoCodificado){
     const rows = Math.ceil(textoCodificado.length/clave.length)
     const columns = clave.length
-    var resultado = new Array(rows)
-    var k = 0
-    var i = 0
-    for (i=0; i< resultado.length;i++){
-        resultado[i] = new Array(columns)
-    }
-    i=0
-    while(i<rows){
-        for(let j=0;j<columns;j++){
-            resultado[i][j] = textoCodificado[k++]
-            resultado[i+1][j] = textoCodificado[k++] 
+    //se crea la matriz
+    var mtx = []
+    for(let x=0;x<rows;x++){
+        mtx[x] = []
+        for(let y=0;y<columns;y++){
+            mtx[x][y] = ""
         }
-        i += 2
     }
-    return resultado
+
+    const claveOrdenada = clave.split("").sort()
+    textoCodificado = textoCodificado.split("")
+    
+    for(element of clave){
+        var idx = clave.indexOf(claveOrdenada.shift())
+        for(let i=0;i<rows;i++){
+            mtx[i][idx] = textoCodificado.shift()
+        }
+    }
+
+    return mtx
+
 }
 
 function decodifica(clave,textoCodificado){
     const rows = Math.ceil(textoCodificado.length/clave.length)
-    const claveOrdenada = clave.split("").sort()
-    var matrix = getMatrixCodificada(claveOrdenada,textoCodificado)
+    const indices = getIndices(clave)
+    const matriz = getMatrixCodificada(clave,textoCodificado)
     var textoDecodificado = ""
-    var temp =
-    draw(matrix,rows,clave.length,clave,getIndices(clave))
-    console.log(matrix)
-    for (let i=0;i<rows;i++){
-        for (letra of clave){
-            temp = matrix[i][claveOrdenada.indexOf(letra)]
-            if(temp!="_"){
-                textoDecodificado += temp 
-            }
+    draw(matriz,rows,clave.length,clave,indices)
+    for(let i=0;i<rows;i++){
+        for(let j=0;j<clave.length;j++){
+            if(matriz[i][j]!='_') {textoDecodificado += matriz[i][j]}
         }
     }
     return textoDecodificado
@@ -238,22 +241,32 @@ function decodifica(clave,textoCodificado){
 
 function getCodifica(){
     const clave = document.getElementById("InputKey").value;
+    undraw()
     if(verificaClave(clave)){
         const textoPlano = document.getElementById("InputTxtPlano").value
-        const resultado = codifica(clave,textoPlano)
-        
-        OutputResultado.value = resultado
+        var resultado = codifica(clave,textoPlano)
+        resultado = resultado.split("")
+        for (let i=0; i<resultado.length;i++){
+            if (resultado[i] === " "){
+                resultado[i] = String.fromCharCode(160)
+            }
+        }
+        for (let i=0; i<resultado.length;i++){
+            OutputResultado.value += resultado[i]
+        }
+
     }else{
         alert("Tu clave no debe contener caracteres repetidos")
     }
 }
 
 function getDecodifica(){
+    undraw()
     const clave = document.getElementById("InputKey").value;
     if(verificaClave(clave)){
         const textoCodificado = document.getElementById("InputTxtCodificado").value
         const resultado = decodifica(clave,textoCodificado)
-        
+
         OutputResultado.value = resultado
     }else{
         alert("Tu clave no debe contener caracteres repetidos")
