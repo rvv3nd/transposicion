@@ -244,15 +244,19 @@ function getCodifica(){
     undraw()
     if(verificaClave(clave)){
         const textoPlano = document.getElementById("InputTxtPlano").value
-        var resultado = codifica(clave,textoPlano)
-        resultado = resultado.split("")
-        for (let i=0; i<resultado.length;i++){
-            if (resultado[i] === " "){
-                resultado[i] = String.fromCharCode(160)
+        if( clave.length > textoPlano.length){
+            alert("Tu mensaje no puede ser menor que el tamaño de la clave, BERTHA 🙄")
+        }else{
+            var resultado = codifica(clave,textoPlano)
+            resultado = resultado.split("")
+            for (let i=0; i<resultado.length;i++){
+                if (resultado[i] === " "){
+                    resultado[i] = String.fromCharCode(160)
+                }
             }
-        }
-        for (let i=0; i<resultado.length;i++){
-            OutputResultado.value += resultado[i]
+            for (let i=0; i<resultado.length;i++){
+                OutputResultado.value += resultado[i]
+            }
         }
 
     }else{
@@ -264,10 +268,14 @@ function getDecodifica(){
     undraw()
     const clave = document.getElementById("InputKey").value;
     if(verificaClave(clave)){
-        const textoCodificado = document.getElementById("InputTxtCodificado").value
-        const resultado = decodifica(clave,textoCodificado)
+        if( clave.length > textoPlano.length){
+            alert("Tu mensaje no puede ser menor que el tamaño de la clave, BERTHA 🙄")
+        }else{
+            const textoCodificado = document.getElementById("InputTxtCodificado").value
+            const resultado = decodifica(clave,textoCodificado)
 
-        OutputResultado.value = resultado
+            OutputResultado.value = resultado
+        }
     }else{
         alert("Tu clave no debe contener caracteres repetidos")
     }
