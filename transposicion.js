@@ -181,8 +181,7 @@ function codifica(clave,textoPlano){
     const columns = clave.length
     var matrix = getMatrix(clave,textoPlano)
     var indices = getIndices(clave)
-    // console.log(clave)
-    // console.log(indices)
+
     console.log(matrix)
     draw(matrix,rows,columns,clave,indices)
     var idxMenor 
@@ -268,10 +267,10 @@ function getDecodifica(){
     undraw()
     const clave = document.getElementById("InputKey").value;
     if(verificaClave(clave)){
+        const textoCodificado = document.getElementById("InputTxtCodificado").value
         if( clave.length > textoPlano.length){
             alert("Tu mensaje no puede ser menor que el tamaño de la clave, BERTHA 🙄")
         }else{
-            const textoCodificado = document.getElementById("InputTxtCodificado").value
             const resultado = decodifica(clave,textoCodificado)
 
             OutputResultado.value = resultado
