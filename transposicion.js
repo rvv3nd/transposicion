@@ -181,7 +181,8 @@ function codifica(clave,textoPlano){
     const columns = clave.length
     var matrix = getMatrix(clave,textoPlano)
     var indices = getIndices(clave)
-
+    // console.log(clave)
+    // console.log(indices)
     console.log(matrix)
     draw(matrix,rows,columns,clave,indices)
     var idxMenor 
@@ -243,19 +244,15 @@ function getCodifica(){
     undraw()
     if(verificaClave(clave)){
         const textoPlano = document.getElementById("InputTxtPlano").value
-        if( clave.length > textoPlano.length){
-            alert("Tu mensaje no puede ser menor que el tamaño de la clave, BERTHA 🙄")
-        }else{
-            var resultado = codifica(clave,textoPlano)
-            resultado = resultado.split("")
-            for (let i=0; i<resultado.length;i++){
-                if (resultado[i] === " "){
-                    resultado[i] = String.fromCharCode(160)
-                }
+        var resultado = codifica(clave,textoPlano)
+        resultado = resultado.split("")
+        for (let i=0; i<resultado.length;i++){
+            if (resultado[i] === " "){
+                resultado[i] = String.fromCharCode(160)
             }
-            for (let i=0; i<resultado.length;i++){
-                OutputResultado.value += resultado[i]
-            }
+        }
+        for (let i=0; i<resultado.length;i++){
+            OutputResultado.value += resultado[i]
         }
 
     }else{
@@ -268,13 +265,9 @@ function getDecodifica(){
     const clave = document.getElementById("InputKey").value;
     if(verificaClave(clave)){
         const textoCodificado = document.getElementById("InputTxtCodificado").value
-        if( clave.length > textoPlano.length){
-            alert("Tu mensaje no puede ser menor que el tamaño de la clave, BERTHA 🙄")
-        }else{
-            const resultado = decodifica(clave,textoCodificado)
+        const resultado = decodifica(clave,textoCodificado)
 
-            OutputResultado.value = resultado
-        }
+        OutputResultado.value = resultado
     }else{
         alert("Tu clave no debe contener caracteres repetidos")
     }
