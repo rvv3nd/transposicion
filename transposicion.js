@@ -181,12 +181,10 @@ function codifica(clave,textoPlano){
     const columns = clave.length
     var matrix = getMatrix(clave,textoPlano)
     var indices = getIndices(clave)
-    // console.log(clave)
-    // console.log(indices)
-    console.log(matrix)
-    draw(matrix,rows,columns,clave,indices)
     var idxMenor 
     var textoCodificado = ""
+    
+    draw(matrix,rows,columns,clave,indices)
     for(let i=0;i<clave.length;i++){
         idxMenor = getIndiceMenor(indices)
         indices[idxMenor] = 257
@@ -194,7 +192,7 @@ function codifica(clave,textoPlano){
             textoCodificado += matrix[j][idxMenor]
         }
     }
-    console.log(textoCodificado)
+
     return textoCodificado
 }
 
@@ -266,7 +264,6 @@ function getDecodifica(){
     if(verificaClave(clave)){
         const textoCodificado = document.getElementById("InputTxtCodificado").value
         const resultado = decodifica(clave,textoCodificado)
-
         OutputResultado.value = resultado
     }else{
         alert("Tu clave no debe contener caracteres repetidos")
