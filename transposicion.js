@@ -113,7 +113,7 @@ function getIndiceMenor(array){
 }
 
 function getIndices(clave){
-    /* Función que resibe la clave y busca cada elemento de esta 
+    /* Función que recibe la clave y busca cada elemento de esta 
     en el array de caracteres ascci y los devuelve */
     const ascii = [
         "␀","␁","␂", "␃","␄",
